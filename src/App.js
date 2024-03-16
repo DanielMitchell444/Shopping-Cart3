@@ -13,35 +13,53 @@ import SearchBar from './Components/SearchBar';
 import Cart from './Pages/Cart';
 import CartItems from './Components/CartItems';
 import Data from './Components/Data';
+import { useEffect } from 'react';
 function App() {
 
-  const [cardArray, setCardArray] = useState(data)
   const [search, setSearch] = useState("");
   const [filtered, setFilteredUser] = useState("")
   const [searchBar, setSearchBarOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
-  const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
-  const [filteredData, setFilteredData] = useState(data)
+  const [isSearchBarOpen, setIsSearchBarOpen] = useState(false)
+  const [data, setData] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [quantity, setQuantity] = useState([]);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+     try{
+      const response = await fetch('https://fakestoreapi.com/products?limit=5');
+      const data = await response.json();
+      setData(data);
+  
+     } catch(error) {
+      console.log(error);
+     }
+     }
+     fetchData();
+     }, [])
   
 
 
 
-  const addItemToCart = (product) => {
-
-   const filteredItem = data.filter((items => items.value === product))
-
-   setSelectedItem([...selectedItem, product]);
-   console.log(product);
-  }
-
-  const removeItem = (product) => {
-   setSelectedItem(selectedItem.filter(item => item.id !== product.id));
-    console.log(product)
-    console.log('this is clicked')
-  }
+     const addItemToCart = (product) => {
+      const cart = data.filter(datas => datas.id === product);
+      setProducts([...products, product]);
+      setQuantity(quantity + 1);
+    }
+    
+    const removeItem = (product) => {
+    setProducts(products.filter(datas => datas.id !== product.id));
+    setQuantity(quantity - 1);
+    }
+    
 
   const toggleSearchbar = () => {
       setIsSearchBarOpen((isSearchBarOpen) => !isSearchBarOpen)
+  }
+
+  const filterSearch = () => {
+
   }
 
   const closeModal = () => {
@@ -55,8 +73,7 @@ function App() {
     {isSearchBarOpen &&
     <SearchBar 
     onClose = {toggleSearchbar}
-    data = {Data}
-    setFilteredData = {setFilteredData}
+    data = {data}
     />
     }
     <Routes>
@@ -64,14 +81,18 @@ function App() {
       />} />
       <Route path = "/shopping" element = {<Shopping 
       addItem = {addItemToCart}
+      data = {data}
       />} />
       <Route exact path = "/cartitem" element = {<CartItems 
        removeItem = {removeItem}
+       items = {products}
+       quantity = {quantity}
       />}
       />
       <Route exact path = "/cart" element = {<Cart
-      items = {selectedItem}
+      items = {products}
       removeItem = {removeItem}
+      quantity = {quantity}
       />} />
     </Routes>
     </div>

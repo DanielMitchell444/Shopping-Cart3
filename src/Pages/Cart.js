@@ -2,7 +2,7 @@ import React from "react";
 import Cards from "../Components/Cards";
 import styles from '../App.module.css'
 import CartItems from "../Components/CartItems";
-function Cart({items, removeItem}){
+function Cart({items, removeItem, quantity}){
  return(
  <div className= {styles.cartItems}>
     <h2 class = {styles.cartHeader}>My Cart</h2>
@@ -10,7 +10,7 @@ function Cart({items, removeItem}){
   {items.map(item => {
   return <CartItems
    key = {item.name}
-   name = {item.name}
+   title = {item.title}
    price = {item.price}
    value = {item.value}
    image = {item.image}
@@ -18,7 +18,7 @@ function Cart({items, removeItem}){
   />
   })}
  </div>
-  <h2>{items.price}</h2>
+  <h2>total: ${items.reduce((accumulator, current) => accumulator + quantity * current.price, 0 )}</h2>
  </div>
  )
 }

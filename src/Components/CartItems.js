@@ -5,7 +5,7 @@ const CartItems = (props) => {
  <div className= {styles.content}>
   <div className= {styles.card}>
     <img src = {props.image} className= {styles.image} />
-     <h2>{props.name}</h2>
+     <h2>{props.title}</h2>
      <p>{props.price}</p>
      <p>{props.id}</p>
      <button

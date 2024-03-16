@@ -1,7 +1,7 @@
 import React from "react";
 import styles from '../App.module.css'
 
-const Cards = ({price, image, name, value, onClick}) => {
+const Cards = ({price, image, name, value, onClick, title}) => {
  return(
  
 <div 
@@ -15,8 +15,8 @@ className = {styles.content}
   
 
   /> 
-  <h1>{name}</h1>
-  <h2>{price}</h2>
+  <h1>{title}</h1>
+  <h2>${price}</h2>
   <button
   value = {value}
   onClick={onClick}
